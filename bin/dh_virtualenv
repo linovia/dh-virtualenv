@@ -55,6 +55,10 @@ def main():
                       help=('package to install before processing '
                             'requirements.txt.'),
                       default=[])
+    parser.add_option('--preinstall-script', action='append',
+                      help=('shell script invoked before processing '
+                            'requirements.txt'),
+                      default='')
     parser.add_option('--pypi-url', help='Base URL of the PyPI server')
     # Ignore user-specified option bunldes
     parser.add_option('-O', help=SUPPRESS_HELP)
@@ -85,6 +89,7 @@ def main():
             package,
             extra_urls=options.extra_index_url,
             preinstall=options.preinstall,
+            preinstall_script=options.preinstall_script,
             pypi_url=options.pypi_url,
             setuptools=options.setuptools,
             verbose=verbose,

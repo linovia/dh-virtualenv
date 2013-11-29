@@ -28,7 +28,8 @@ DEFAULT_INSTALL_DIR = '/usr/share/python/'
 
 class Deployment(object):
     def __init__(self, package, extra_urls=None, preinstall=None,
-                 pypi_url=None, setuptools=False, verbose=False):
+                 preinstall_script=None, pypi_url=None, setuptools=False,
+                 verbose=False):
         self.package = package
         self.install_root = os.environ.get(ROOT_ENV_KEY, DEFAULT_INSTALL_DIR)
         root = self.install_root.lstrip('/')
@@ -36,8 +37,9 @@ class Deployment(object):
         self.package_dir = os.path.join(self.debian_root, package)
         self.bin_dir = os.path.join(self.package_dir, 'bin')
 
-        self.extra_urls = extra_urls if extra_urls is not None else []
-        self.preinstall = preinstall if preinstall is not None else []
+        self.extra_urls = extra_urls or []
+        self.preinstall = preinstall or []
+        self.preinstall_script = preinstall_script or ''
         self.pypi_url = pypi_url
         self.log_file = tempfile.NamedTemporaryFile()
         self.verbose = verbose
@@ -85,6 +87,9 @@ class Deployment(object):
         # a custom package to install dependencies (think something
         # along lines of setuptools), but that does not get installed
         # by default virtualenv.
+        if self.preinstall_script:
+            subprocess.check_call(*self.preinstall_script)
+
         if self.preinstall:
             subprocess.check_call(self.pip(*self.preinstall))
 
