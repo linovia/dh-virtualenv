@@ -88,7 +88,7 @@ class Deployment(object):
         # along lines of setuptools), but that does not get installed
         # by default virtualenv.
         if self.preinstall_script:
-            subprocess.check_call(*self.preinstall_script)
+            subprocess.check_call(self.preinstall_script.split(' '))
 
         if self.preinstall:
             subprocess.check_call(self.pip(*self.preinstall))

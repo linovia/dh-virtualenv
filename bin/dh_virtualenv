@@ -55,7 +55,7 @@ def main():
                       help=('package to install before processing '
                             'requirements.txt.'),
                       default=[])
-    parser.add_option('--preinstall-script', action='append',
+    parser.add_option('--preinstall-script', action='store',
                       help=('shell script invoked before processing '
                             'requirements.txt'),
                       default='')
